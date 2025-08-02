@@ -154,7 +154,7 @@ function togglePanel(toggleBtn, panel, homeScreen, topicSections) {
   function init() {
     console.log("✅ Blitz Dock initialized.");
 
-    const toggleBtn     = $('#bdp-toggle');
+    const toggleBtn     = $('#bdp-toggle, .dock-avatar');
     const panel         = $('#bdp-chat-panel');
     const closeBtn      = $('#bdp-close-chat');
     const homeScreen    = $('#bdp-home-screen');
@@ -167,9 +167,13 @@ function togglePanel(toggleBtn, panel, homeScreen, topicSections) {
 
     if (!toggleBtn.length || !panel.length) return;
 
-    toggleBtn.on('click', e => {
+   toggleBtn.on('click', function(e) {
       e.preventDefault();
-      togglePanel(toggleBtn, panel, homeScreen, topicSections);
+      const wasHidden = panel.attr('aria-hidden') === 'true';
+      togglePanel($(this), panel, homeScreen, topicSections);
+      if (wasHidden) {
+        logEvent('view', 'panel_open', 'dock_avatar');
+      }
     });
     closeBtn.on('click', () => {
       panel.css('display','none').attr('aria-hidden','true');
