@@ -292,12 +292,24 @@ class Admin {
         if ( $sub )    $where[] = $wpdb->prepare( 'event_subtype = %s', $sub );
         $where_sql = $where ? 'WHERE ' . implode( ' AND ', $where ) : '';
 
-       $events = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table} {$where_sql} ORDER BY created_at DESC LIMIT %d OFFSET %d", $per_page, $offset ) );
-        $total  = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} {$where_sql}" );
-        $total_pages = max( 1, ceil( $total / $per_page ) );
-        $topic_rows = $wpdb->get_results( "SELECT event_topic AS topic, COUNT(*) AS c FROM {$table} {$where_sql} GROUP BY event_topic" );
-        $type_rows  = $wpdb->get_results( "SELECT event_type AS type, COUNT(*) AS c FROM {$table} {$where_sql} GROUP BY event_type" );
-        $sub_rows   = $wpdb->get_results( "SELECT event_subtype AS subtype, COUNT(*) AS c FROM {$table} {$where_sql} GROUP BY event_subtype" );
+        $events = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM {$table} {$where_sql} ORDER BY created_at DESC LIMIT %d OFFSET %d",
+                $per_page,
+                $offset
+            )
+        );
+
+        $counts_where   = $where;
+        $counts_where[] = $wpdb->prepare( 'event_topic <> %s', 'panel_open' );
+        $counts_sql     = 'WHERE ' . implode( ' AND ', $counts_where );
+
+        $total_filtered = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} {$counts_sql}" );
+        $total_all      = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} {$where_sql}" );
+        $total_pages    = max( 1, ceil( $total_all / $per_page ) );
+        $topic_rows     = $wpdb->get_results( "SELECT event_topic AS topic, COUNT(*) AS c FROM {$table} {$counts_sql} GROUP BY event_topic" );
+        $type_rows      = $wpdb->get_results( "SELECT event_type AS type, COUNT(*) AS c FROM {$table} {$counts_sql} GROUP BY event_type" );
+        $sub_rows       = $wpdb->get_results( "SELECT event_subtype AS subtype, COUNT(*) AS c FROM {$table} {$counts_sql} GROUP BY event_subtype" );
 
         $subtypes = [];
         if ( $topic && 'all' !== $topic ) {
@@ -307,7 +319,7 @@ class Admin {
         wp_send_json_success(
             [
                 'events'      => $events,
-                'total'       => $total,
+                'total'       => $total_filtered,
                 'topics'      => $topic_rows,
                 'subtypes'    => $subtypes,
                 'sub_counts'  => $sub_rows,
