@@ -300,16 +300,14 @@ class Admin {
             )
         );
 
-        $counts_where   = $where;
-        $counts_where[] = $wpdb->prepare( 'event_topic <> %s', 'panel_open' );
-        $counts_sql     = 'WHERE ' . implode( ' AND ', $counts_where );
-
-        $total_filtered = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} {$counts_sql}" );
-        $total_all      = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} {$where_sql}" );
-        $total_pages    = max( 1, ceil( $total_all / $per_page ) );
-        $topic_rows     = $wpdb->get_results( "SELECT event_topic AS topic, COUNT(*) AS c FROM {$table} {$counts_sql} GROUP BY event_topic" );
-        $type_rows      = $wpdb->get_results( "SELECT event_type AS type, COUNT(*) AS c FROM {$table} {$counts_sql} GROUP BY event_type" );
-        $sub_rows       = $wpdb->get_results( "SELECT event_subtype AS subtype, COUNT(*) AS c FROM {$table} {$counts_sql} GROUP BY event_subtype" );
+      $total      = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} {$where_sql}" );
+        $total_pages = max( 1, ceil( $total / $per_page ) );
+        $topic_rows  = $wpdb->get_results( "SELECT event_topic AS topic, COUNT(*) AS c FROM {$table} {$where_sql} GROUP BY event_topic" );
+        $type_rows   = $wpdb->get_results( "SELECT event_type AS type, COUNT(*) AS c FROM {$table} {$where_sql} GROUP BY event_type" );
+        $sub_where   = $where;
+        $sub_where[] = "event_subtype <> ''";
+        $sub_where_sql = 'WHERE ' . implode( ' AND ', $sub_where );
+        $sub_rows    = $wpdb->get_results( "SELECT event_subtype AS subtype, COUNT(*) AS c FROM {$table} {$sub_where_sql} GROUP BY event_subtype" );
 
         $subtypes = [];
         if ( $topic && 'all' !== $topic ) {
@@ -318,8 +316,8 @@ class Admin {
 
         wp_send_json_success(
             [
-                'events'      => $events,
-                'total'       => $total_filtered,
+              'events'      => $events,
+                'total'       => $total,
                 'topics'      => $topic_rows,
                 'subtypes'    => $subtypes,
                 'sub_counts'  => $sub_rows,
