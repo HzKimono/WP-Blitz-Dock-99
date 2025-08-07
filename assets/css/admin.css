@@ -1,0 +1,626 @@
+/* ===== Improved Blitz Dock Admin Styles ===== */
+:root{
+  --status-completed:#4caf50;
+  --status-pending:#ff9800;
+  --status-canceled:#f44336;
+}
+
+/* Sosyal satır */
+.bdp-social-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+/* Online mağaza satırı - sosyal ile aynı */
+.bdp-ecomm-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.bdp-social-row select,
+.bdp-social-row input[type="url"] {
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex: 1;
+}
+.bdp-ecomm-row select,
+.bdp-ecomm-row input[type="url"] {
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex: 1;
+}
+
+.bdp-social-row img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border-radius: 4px;
+  background: #f9f9f9;
+  transition: transform 0.2s ease-in-out;
+}
+.bdp-social-row img:hover {
+  transform: scale(1.1);
+}
+.bdp-ecomm-row img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border-radius: 4px;
+  background: #f9f9f9;
+  transition: transform 0.2s ease-in-out;
+}
+.bdp-ecomm-row img:hover {
+  transform: scale(1.1);
+}
+
+.bdp-remove-link {
+  background: none;
+  border: none;
+  color: #dc3545;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+}
+.bdp-remove-link:hover {
+  color: #a71d2a;
+}
+/* E-comm sil butonu - sosyal ile aynı */
+.bdp-remove-ecomm {
+  background: none;
+  border: none;
+  color: #dc3545;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+}
+.bdp-remove-ecomm:hover {
+  color: #a71d2a;
+}
+.bdp-faq-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.bdp-faq-label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.bdp-faq-card input[type="text"],
+.bdp-faq-card textarea {
+  width: 100%;
+}
+
+.bdp-faq-card .bdp-remove-faq {
+  align-self: flex-end;
+}
+
+.bdp-admin-container { display: flex; }
+.bdp-tabs { flex: 0 0 200px; list-style: none; margin: 0; padding: 0; border-right: 1px solid #ddd; }
+.bdp-tabs li { margin-bottom: 4px; }
+.bdp-tabs button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.bdp-tabs button:hover { background-color: #f0f0f0; }
+.bdp-tabs button[aria-selected="true"] { background-color: #eaeaea; font-weight: bold; }
+.bdp-tab-icon { width: 20px; height: 20px; flex-shrink: 0; }
+@media screen and (max-width: 600px) {
+  .bdp-tabs { flex-basis: 60px; }
+  .bdp-tabs button span { display: none; }
+  .bdp-tabs button { justify-content: center; }
+}
+.bdp-panels { flex: 1; padding: 20px; }
+.bdp-tab-panel { display: none; animation: fadeIn 0.2s ease-in-out; }
+.bdp-tab-panel.active { display: block; }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Yeni Bağlantı Ekle */
+#bdp-add-link {
+  background: #e2f3e9;
+  color: #198754;
+  border: none;
+  padding: 8px 16px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+/* Yeni Online Mağaza Bağlantısı */
+#bdp-add-ecomm {
+  background: #e2f3e9;
+  color: #198754;
+  border: none;
+  padding: 8px 16px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+#bdp-add-ecomm:hover {
+  background: #cde7d8;
+}
+#bdp-add-link:hover {
+  background: #cde7d8;
+}
+
+/* Modern sayfa seçimi */
+.bdp-page-option {
+  display: inline-block;
+  padding: 10px 14px;
+  margin: 6px 6px 6px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f8f8f8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  user-select: none;
+}
+.bdp-page-option:hover {
+  background-color: #f0f0f0;
+  border-color: #bbb;
+}
+.bdp-page-option input[type="checkbox"] {
+  display: none;
+}
+.bdp-page-option.selected {
+  background-color: #4CAF50;
+  color: #fff;
+  border-color: #4CAF50;
+}
+
+/* Yeni: Sayfa görünürlük satırı */
+.bdp-page-option-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+.bdp-page-option-row strong {
+  flex: 1;
+}
+
+/* Avatar Görseli */
+.dock-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+/* Dock Pozisyonları */
+.dock-bottom-right {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.dock-bottom-left {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 9999;
+}
+
+.dock-top-right {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.dock-top-left {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 9999;
+}
+
+/* Mobil Uyum */
+@media screen and (max-width: 768px) {
+  .bdp-dock-wrapper {
+    max-width: 95vw;
+    bottom: 10px !important;
+    right: 10px !important;
+    left: 10px !important;
+  }
+}
+/* === Blitz Dock Admin UI Enhancements === */
+
+.bdp-section-group {
+  background: #fefefe;
+  border: 1px solid #ddd;
+  padding: 24px;
+  margin-bottom: 32px;
+  border-radius: 8px;
+  max-width: 800px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.bdp-section-group h3 {
+  margin-top: 0;
+  font-size: 20px;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+/* Sayfa Görünürlük alanı için özel kısıtlama */
+.bdp-section-group.page-visibility {
+  background: #fff;
+  max-width: 700px;
+}
+/* === Avatar Picker Styles === */
+.bdp-avatar-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+.bdp-avatar-option {
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: 0.2s;
+}
+.bdp-avatar-option:hover {
+  transform: scale(1.05);
+}
+.bdp-avatar-option.selected {
+  border-color: #0073aa;
+}
+/* === Modal Avatar Picker === */
+#bdp-avatar-preview {
+  cursor: pointer;
+}
+
+#bdp-avatar-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+#bdp-avatar-modal.open {
+  display: flex;
+}
+#bdp-avatar-modal .bdp-modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 6px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  position: relative;
+}
+#bdp-avatar-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.bdp-avatar-search {
+  width: 100%;
+  padding: 6px 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.bdp-avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: 12px;
+}
+.bdp-avatar-choice {
+  border: 2px solid transparent;
+  border-radius: 50%;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+}
+.bdp-avatar-choice img {
+  display: block;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+}
+.bdp-avatar-choice:hover {
+  transform: scale(1.05);
+}
+.bdp-avatar-choice.selected {
+  border-color: #0073aa;
+}
+.bdp-avatar-choice:focus {
+  outline: 2px solid #0073aa;
+  outline-offset: 2px;
+}
+.bdp-avatar-upload {
+  margin-top: 15px;
+}
+
+/* Status badges/select */
+.bdp-status-select { padding: 2px 4px; }
+.bdp-status-badge--pending { background: #f1c40f; }
+.bdp-status-badge--completed { background: #2ecc71; }
+.bdp-status-badge--canceled { background: #e74c3c; }
+/* ===== Hide Blitz Dock Submenus via CSS (Zero‑Risk) ===== */
+#toplevel_page_blitz-dock .wp-submenu li a[href*="page=blitz-dock-messages"],
+#toplevel_page_blitz-dock .wp-submenu li a[href*="page=blitz-dock-analytics"] {
+  display: none !important;
+}
+
+/* === Blitz Dock: Status-Based Row Coloring === */
+.bdp-row.status-pending {
+  background-color: #fff8e1; /* Açık sarı */
+  border-left: 4px solid #f1c40f;
+}
+.bdp-row.status-completed {
+  background-color: #e8f5e9; /* Açık yeşil */
+  border-left: 4px solid #2ecc71;
+}
+.bdp-row.status-canceled {
+  background-color: #fdecea; /* Açık kırmızı */
+  border-left: 4px solid #e74c3c;
+}
+.bdp-row td {
+  border-bottom: 1px solid #eee;
+}
+.bdp-row:hover {
+  background-color: #f3f3f3;
+}
+/* === Blitz Dock: Status-Based Row Coloring (Override WP Zebra) === */
+table.wp-list-table .bdp-row.status-pending {
+  background-color: #fff8e1 !important;   /* Açık sarı */
+  border-left: 4px solid #f1c40f;
+}
+
+table.wp-list-table .bdp-row.status-completed {
+  background-color: #e8f5e9 !important;   /* Açık yeşil */
+  border-left: 4px solid #2ecc71;
+}
+
+table.wp-list-table .bdp-row.status-canceled {
+  background-color: #fdecea !important;   /* Açık kırmızı */
+  border-left: 4px solid #e74c3c;
+}
+
+/* Satır hover’ları da override edelim */
+table.wp-list-table .bdp-row:hover {
+  background-color: #f3f3f3 !important;
+}
+/* === Google Map Card === */
+.bdp-map-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bdp-map-card textarea {
+  width: 100%;
+   height: 90px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: none;
+}
+.bdp-map-card textarea:focus {
+  border-color: #ff6a2c;
+  box-shadow: 0 0 0 1px #ff6a2c;
+  outline: none;
+}
+.bdp-map-preview {
+  position: relative;
+  width: 100%;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f9f9f9;
+  border: 1px dashed #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.bdp-map-preview iframe,
+.bdp-map-preview #bdp-map-canvas {
+  width: 100%;
+  height: 100%;
+  border: 0;
+   border-radius: 6px;
+}
+.bdp-map-help {
+  color: #ff6a2c;
+  text-decoration: none;
+}
+
+.bdp-map-help:hover {
+  text-decoration: underline;
+}
+
+.bdp-map-placeholder {
+  color: #666;
+  text-align: center;
+  padding: 20px;
+} 
+.bdp-map-placeholder {
+  color: #666;
+  text-align: center;
+  padding: 20px;
+}
+
+@media screen and (max-width: 768px) {
+ .bdp-map-card {
+    padding: 16px;
+  }
+}
+
+/* ==== Analytics Styles ==== */
+.bdp-analytics-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.bdp-analytics-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.bdp-analytics-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 16px;
+  flex: 1;
+}
+.bdp-analytics-card canvas { max-width: 100%; }
+
+.bdp-card-value {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+/* === BlitzStack Analytics - Top Stats (Modernized) === */
+.bdp-stat-boxes {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  overflow-x: auto;
+}
+
+.bdp-stat-box {
+  flex: 0 0 120px;
+  width: 120px;
+  text-align: center;
+  background: #fdfdfd;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 20px 12px;
+}
+
+.bdp-stat-box img {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 10px;
+}
+
+.bdp-stat-label {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 4px;
+}
+
+.bdp-stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+#bdp-analytics-pagination {
+  margin-top: 12px;
+}
+#bdp-analytics-pagination a {
+  padding: 4px 8px;
+  margin-right: 4px;
+  background: #f1f1f1;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #0073aa;
+}
+#bdp-analytics-pagination a.active {
+  background: #0073aa;
+  color: #fff;
+}
+.bdp-messages-card {
+  background:var(--bdp-card-bg,#fff);
+  border-radius:var(--bdp-radius,8px);
+  box-shadow:0 1px 3px rgba(0,0,0,0.1);
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  position:relative;
+  transition:background-color .3s;
+}
+.bdp-messages-card .bdp-card-header{display:flex;justify-content:space-between;align-items:flex-start;}
+.bdp-messages-card h3{margin:0;font-size:16px;}
+.bdp-messages-card small{font-size:12px;color:#666;}
+.bdp-total-count{font-size:24px;font-weight:600;}
+.bdp-chart-wrap{width:100%;height:80px;}
+.bdp-status-breakdown{display:flex;gap:12px;font-size:12px;}
+.bdp-status-label{display:flex;align-items:center;gap:4px;cursor:pointer;background:none;border:none;padding:0;font:inherit;}
+.bdp-status-label.completed{color:var(--status-completed);}
+.bdp-status-label.pending{color:var(--status-pending);}
+.bdp-status-label.canceled{color:var(--status-canceled);}
+/* ==== Status-based Chart Background ==== */
+.bdp-chart-wrap.status-completed {
+  background-color: rgba(76, 175, 80, 0.1); /* Yeşil */
+}
+.bdp-chart-wrap.status-pending {
+  background-color: rgba(255, 152, 0, 0.1); /* Turuncu */
+}
+.bdp-chart-wrap.status-canceled {
+  background-color: rgba(244, 67, 54, 0.1); /* Kırmızı */
+}
+/* === Blitz Dock Header Logo === */
+.bdp-header-logo {
+  margin: 10px 0 20px;
+  display: flex;
+  align-items: center;
+}
+.bdp-header-logo img {
+  max-width: 240px;
+  height: auto;
+}
