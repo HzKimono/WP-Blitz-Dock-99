@@ -173,13 +173,19 @@ foreach ( $tabs as $slug => $label ) {
   </aside>
 
   <main class="bdp-content" id="bdp-content" tabindex="-1">
-      <header class="bdp-toolbar" role="region" aria-labelledby="bdp-toolbar-title">
+      <header class="bdp-toolbar" role="region" aria-label="Blitz Dock toolbar">
       <div class="bdp-toolbar__slot bdp-toolbar__slot--left">
-        <h1 id="bdp-toolbar-title" class="bdp-toolbar__title">
-          <span class="bdp-toolbar__plugin">Blitz Dock v<?php echo esc_html( BLITZ_DOCK_VERSION ); ?></span>
-          <span class="bdp-toolbar__sep">—</span>
-          <span class="bdp-toolbar__panel" id="bdp-active-panel-title">Dashboard</span>
-        </h1>
+         <nav class="bdp-breadcrumb" aria-label="Breadcrumb">
+          <ol class="bdp-breadcrumb__list">
+            <li class="bdp-breadcrumb__item bdp-crumb-plugin">
+              <span>Blitz Dock v<?php echo esc_html( BLITZ_DOCK_VERSION ); ?></span>
+            </li>
+            <li class="bdp-breadcrumb__sep" aria-hidden="true"></li>
+            <li class="bdp-breadcrumb__item bdp-crumb-current" id="bdp-active-panel-title" aria-current="page">
+              Dashboard
+            </li>
+          </ol>
+        </nav>
       </div>
 
       <div class="bdp-toolbar__slot bdp-toolbar__slot--center" id="bdp-toolbar-center">

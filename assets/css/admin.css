@@ -941,3 +941,49 @@ body.folded.toplevel_page_blitz-dock #wpcontent { padding-left: 0 !important; }
 
 /* Panellerdeki sağ boşluğu korumak istiyorsan: */
 .bdp-panels{ padding-right: 24px; }
+
+/* Breadcrumb tokens */
+.bdp-admin-layout{
+  --bdp-font: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --bdp-crumb-size: 15px;           /* Blitz Dock v1.4 */
+  --bdp-crumb-weight: 500;
+  --bdp-crumb-current-size: 13px;   /* Active tab */
+  --bdp-crumb-current-weight: 500;  /* set to 400 if you prefer lighter */
+  --bdp-accent: #ff5e0d;            /* active tab color */
+}
+
+.bdp-toolbar{ font-family: var(--bdp-font); } /* ensure Inter (with fallbacks) */
+
+/* Breadcrumb layout */
+.bdp-breadcrumb{ line-height: 1; }
+.bdp-breadcrumb__list{
+  display:flex; align-items:center; gap:10px;
+  list-style:none; margin:0; padding:0;
+}
+
+/* Left part: "Blitz Dock v1.4" */
+.bdp-crumb-plugin{
+  font-size: var(--bdp-crumb-size);
+  font-weight: var(--bdp-crumb-weight);
+  color:#1d2327;
+  white-space:nowrap;
+}
+
+/* Separator */
+.bdp-breadcrumb__sep::before{
+  content:"»";
+  color:#c3c4c7;
+  font-size: var(--bdp-crumb-size);
+  line-height:1;
+}
+
+/* Right part: active tab */
+.bdp-crumb-current{
+  font-size: var(--bdp-crumb-current-size);
+  font-weight: var(--bdp-crumb-current-weight);
+  color: var(--bdp-accent);
+  white-space:nowrap;
+}
+
+/* Hide any legacy title element if it still exists */
+.bdp-toolbar__title{ display:none !important; }

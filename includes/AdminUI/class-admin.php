@@ -53,7 +53,7 @@ class Admin {
     }
 
     public static function render_settings_page() {
-        // Main admin layout with sticky toolbar and panel content.
+        // Main admin layout with sticky toolbar and breadcrumb panel title.
         $file = BLITZ_DOCK_PATH . 'includes/AdminUI/settings-page.php';
 
         if ( file_exists( $file ) ) {

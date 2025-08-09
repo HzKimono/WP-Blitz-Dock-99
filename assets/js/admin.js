@@ -6,7 +6,7 @@
     const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
     const content = document.querySelector('.bdp-admin-layout .bdp-content');
     const panels = content ? Array.from(content.querySelectorAll('[role="tabpanel"]')) : [];
-    const title = document.getElementById('bdp-active-panel-title');
+    const title = document.getElementById('bdp-active-panel-title'); // breadcrumb current tab
 
     function setHeaderFrom(btn){
       if(title && btn?.dataset?.label){
