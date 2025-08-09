@@ -133,11 +133,10 @@ class Admin {
     /**
      * Enqueue the admin CSS.
      */
-   public static function enqueue_admin_styles() {
-        $css_url = plugin_dir_url( __FILE__ ) . '../../assets/css/admin.css';
+    public static function enqueue_admin_styles() {
         wp_enqueue_style(
             'blitz-dock-admin-style',
-            $css_url,
+            BLITZ_DOCK_URL . 'assets/css/admin.css',
             [],
             defined( 'BLITZ_DOCK_VERSION' ) ? BLITZ_DOCK_VERSION : '1.0'
         );

@@ -1,21 +1,46 @@
-document.addEventListener('DOMContentLoaded', function () {
+(function(){
   const { __ } = wp.i18n;
 
-  // TAB SWITCHING
-  const tabs = document.querySelectorAll('.bdp-tabs button');
-  const panels = document.querySelectorAll('.bdp-tab-panel');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', function (e) {
-      e.preventDefault();
-      tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
-      panels.forEach(p => p.classList.remove('active'));
-      this.setAttribute('aria-selected', 'true');
-      const panel = document.getElementById(this.getAttribute('aria-controls'));
-      if (panel) panel.classList.add('active');
-    });
-  });
+  const tablist = document.querySelector('.bdp-admin-layout .bdp-tabs');
+  if(tablist){
+    const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
+    const content = document.querySelector('.bdp-admin-layout .bdp-content');
+    const panels = content ? Array.from(content.querySelectorAll('[role="tabpanel"]')) : [];
 
-   // ==== SOCIAL MEDIA REPEATER ====
+    tabs.forEach(t => t.setAttribute('tabindex', t.getAttribute('aria-selected') === 'true' ? '0' : '-1'));
+    const selected = tabs.find(t => t.getAttribute('aria-selected') === 'true') || tabs[0];
+    if(selected){ showPanel(selected.getAttribute('aria-controls')); }
+
+    tablist.addEventListener('click', (e) => {
+      const btn = e.target.closest('[role="tab"]');
+      if(!btn) return;
+      e.preventDefault();
+      activate(btn);
+    });
+
+    tablist.addEventListener('keydown', (e) => {
+      const cur = document.activeElement.closest('[role="tab"]');
+      if(!cur) return;
+      let i = tabs.indexOf(cur);
+      if(['ArrowUp','ArrowLeft'].includes(e.key)){ e.preventDefault(); i=(i-1+tabs.length)%tabs.length; tabs[i].focus(); }
+      if(['ArrowDown','ArrowRight'].includes(e.key)){ e.preventDefault(); i=(i+1)%tabs.length; tabs[i].focus(); }
+      if(e.key==='Home'){ e.preventDefault(); tabs[0].focus(); }
+      if(e.key==='End'){ e.preventDefault(); tabs[tabs.length-1].focus(); }
+      if(e.key==='Enter' || e.key===' '){ e.preventDefault(); activate(cur); }
+    });
+
+    function activate(btn){
+      tabs.forEach(t => { t.setAttribute('aria-selected','false'); t.setAttribute('tabindex','-1'); });
+      btn.setAttribute('aria-selected','true'); btn.setAttribute('tabindex','0');
+      showPanel(btn.getAttribute('aria-controls'));
+    }
+
+    function showPanel(id){
+      panels.forEach(p => p.hidden = (p.id !== id));
+    }
+  }
+
+  // ==== SOCIAL MEDIA REPEATER ====
   const addSocialBtn    = document.getElementById('bdp-add-link');
   const socialContainer = document.getElementById('bdp-social-links');
   const socialPlatforms = pluginData.socialPlatforms || {};
@@ -388,4 +413,4 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
   }
-});
+})();
