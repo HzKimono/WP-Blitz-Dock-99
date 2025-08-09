@@ -4,7 +4,12 @@
   --status-pending:#ff9800;
   --status-canceled:#f44336;
 }
-/* Blitz Dock – Admin Layout v1.4 (bug-proof & scoped) */
+/* Page scoping (only our screen) */
+body.toplevel_page_blitz-dock .wrap{ margin:0; padding:0; }         /* remove WP default gap */
+body.toplevel_page_blitz-dock #wpfooter{ display:none; }            /* hide admin footer */
+body.toplevel_page_blitz-dock #wpbody-content{ padding-bottom:0; }  /* avoid extra bottom spacing */
+
+/* Layout grid (unchanged idea, but full-bleed) */
 .bdp-admin-layout{
   --bdp-nav-width: 240px;
   --bdp-tab-height: 40px;
@@ -12,80 +17,78 @@
   --bdp-radius: 10px;
   --bdp-gap: 4px;
 
-  --bdp-color-text: #283C50;
-  --bdp-color-muted: #7A8A9A;
-  --bdp-color-hover: #F0F3F7;
-  --bdp-color-active: #EAEFF6;
-  --bdp-color-bg: #FFFFFF;
+  --bdp-color-text:#283C50;
+  --bdp-color-muted:#7A8A9A;
+  --bdp-color-hover:#F0F3F7;
+  --bdp-color-active:#EAEFF6;
+  --bdp-color-bg:#FFFFFF;
 
-  --wp-admin-bar: 32px;
+  --wp-admin-bar:32px;
 
-  display: grid;
-  grid-template-columns: var(--bdp-nav-width) minmax(0, 1fr);
-  gap: 24px;
-  min-height: 100vh; /* ensures left column background reaches bottom */
-  box-sizing: border-box;
+  display:grid;
+  grid-template-columns:var(--bdp-nav-width) minmax(0,1fr);
+  gap:24px;
+  min-height:100vh;         /* white column runs to bottom */
+  box-sizing:border-box;
 }
-
-@media (max-width: 782px){
-  .bdp-admin-layout{ --wp-admin-bar: 46px; }
-}
-
-/* Left column background spans full page height */
-.bdp-admin-layout .bdp-sidebar{
-  background: var(--bdp-color-bg);
-  border-right: 1px solid #e6e9ee;
-  align-self: stretch;      /* stretches with the tallest column */
-  padding: 12px;
-  box-sizing: border-box;
+@media (max-width:782px){
+  .bdp-admin-layout{ --wp-admin-bar:46px; }
 }
 
-/* Only inner content sticks; keeps full white background on parent */
-.bdp-admin-layout .bdp-sidebar__inner{
-  position: sticky;
-  top: var(--wp-admin-bar);
-  max-height: calc(100vh - var(--wp-admin-bar));
-  overflow: auto;
+/* Left column background spans full height, no inner scrollbars */
+.bdp-sidebar{
+  background:var(--bdp-color-bg);
+  border-right:1px solid #e6e9ee;
+  align-self:stretch;
+  padding:12px;
+  box-sizing:border-box;
 }
 
-/* Header / logo */
-.bdp-admin-layout .bdp-header{
-  display: flex; align-items: center; gap: 10px;
-  padding: 15px 8px 12px;
-}
-.bdp-admin-layout .bdp-header__logo{
-  max-width: 150px; height: auto; display: block;
-}
-.bdp-admin-layout .bdp-header__caption{
-  font-size: 11px; letter-spacing: .08em;
-  color: var(--bdp-color-muted); text-transform: uppercase;
+.bdp-sidebar__inner{
+  position:sticky;
+  top:var(--wp-admin-bar);
+  /* remove inner scrollbars */
+  max-height:none;
+  overflow:visible;          /* allow page to scroll, not the sidebar */
+  /* in case of any accidental overflow */
+  overflow-x:hidden;
 }
 
-/* Tabs */
-.bdp-admin-layout .bdp-tabs{ list-style: none; margin: 6px 0 0; padding: 0; }
-.bdp-admin-layout .bdp-tabs li{ margin: var(--bdp-gap) 0; }
-.bdp-admin-layout .bdp-tab{
-  display: flex; align-items: center; gap: 10px;
-  width: 100%; height: var(--bdp-tab-height);
-  padding: 10px 15px;
-  background: transparent; color: var(--bdp-color-text);
-  border: 0; border-radius: var(--bdp-radius);
-  text-align: left; cursor: pointer;
+/* Header: stack vertically (logo on top, caption under) */
+.bdp-header{
+  display:flex;
+  flex-direction:column;     /* ensure caption is UNDER the logo */
+  align-items:flex-start;
+  gap:6px;
+  padding:15px 8px 12px;
 }
-.bdp-admin-layout .bdp-tab:hover{ background: var(--bdp-color-hover); }
-.bdp-admin-layout .bdp-tab[aria-selected="true"]{ background: var(--bdp-color-active); }
-.bdp-admin-layout .bdp-tab:focus-visible{ outline: auto; box-shadow: 0 0 0 3px rgba(40,60,80,.12); }
-.bdp-admin-layout .bdp-tab__icon{ width: var(--bdp-icon-size); height: var(--bdp-icon-size); flex: 0 0 var(--bdp-icon-size); }
+.bdp-header__logo{ max-width:150px; height:auto; display:block; }
+.bdp-header__caption{
+  font-size:11px; letter-spacing:.08em; color:var(--bdp-color-muted); text-transform:uppercase;
+}
+
+/* Tabs (as before) */
+.bdp-tabs{ list-style:none; margin:6px 0 0; padding:0; }
+.bdp-tabs li{ margin:var(--bdp-gap) 0; }
+.bdp-tab{
+  display:flex; align-items:center; gap:10px;
+  width:100%; height:var(--bdp-tab-height);
+  padding:10px 15px;
+  background:transparent; color:var(--bdp-color-text);
+  border:0; border-radius:var(--bdp-radius);
+  text-align:left; cursor:pointer;
+}
+.bdp-tab:hover{ background:var(--bdp-color-hover); }
+.bdp-tab[aria-selected="true"]{ background:var(--bdp-color-active); }
+.bdp-tab:focus-visible{ outline:auto; box-shadow:0 0 0 3px rgba(40,60,80,.12); }
+.bdp-tab__icon{ width:var(--bdp-icon-size); height:var(--bdp-icon-size); flex:0 0 var(--bdp-icon-size); }
 
 /* Right column */
-.bdp-admin-layout .bdp-content{
-  min-width: 0; /* prevents charts/tables from forcing wrap */
-  padding-right: 24px;
-}
+.bdp-content{ min-width:0; padding-right:24px; }
 
-/* Robust panel toggle: use [hidden] */
-.bdp-admin-layout .bdp-content [role="tabpanel"]{ display: block; }
-.bdp-admin-layout .bdp-content [role="tabpanel"][hidden]{ display: none !important; }
+
+.bdp-content [role="tabpanel"]{ display:block; }
+.bdp-content [role="tabpanel"][hidden]{ display:none !important; }
 /* Social row */
 .bdp-social-row {
   display: flex;
@@ -675,3 +678,127 @@ table.wp-list-table .bdp-row:hover {
   max-width: 240px;
   height: auto;
 }
+
+/* =============================================================
+   Blitz Dock Admin Overrides v1.4 (FINAL)
+   Purpose: fix left gutter, caption position, remove inner sidebar
+   scrollbars, hide admin footer, and ensure the white column spans
+   to the very bottom. Scoped only to Blitz Dock screen.
+   ============================================================= */
+
+/* Scope all rules to Blitz Dock top-level page */
+body.toplevel_page_blitz-dock .wrap{ margin:0; padding:0; }
+body.toplevel_page_blitz-dock #wpfooter{ display:none; }
+body.toplevel_page_blitz-dock #wpbody-content{ padding-left:0; padding-bottom:0; }
+body.toplevel_page_blitz-dock #wpcontent{ padding-left:0 !important; }
+body.auto-fold.toplevel_page_blitz-dock #wpcontent{ padding-left:0 !important; }
+body.folded.toplevel_page_blitz-dock #wpcontent{ padding-left:0 !important; }
+
+/* Some plugins add notice margins—neutralize them */
+body.toplevel_page_blitz-dock #wpbody-content > .notice,
+body.toplevel_page_blitz-dock #wpbody-content > .update-nag{ margin-left:0 !important; margin-right:0 !important; }
+
+/* Ensure our main layout wrapper has no unintended left offset */
+body.toplevel_page_blitz-dock .bdp-admin-layout{ margin-left:0 !important; min-height:100vh; box-sizing:border-box; }
+
+/* Left column background must run full height; inner area must not scroll */
+body.toplevel_page_blitz-dock .bdp-sidebar{
+  background:#fff;
+  border-right:1px solid #e6e9ee;
+  align-self:stretch;
+  padding:12px;
+  box-sizing:border-box;
+}
+body.toplevel_page_blitz-dock .bdp-sidebar__inner{
+  position:sticky;
+  top:32px; /* WP admin bar default; mobile handled below */
+  max-height:none;        /* remove inner scrollbars */
+  overflow:visible;
+  overflow-x:hidden;
+}
+@media (max-width:782px){
+  body.toplevel_page_blitz-dock .bdp-sidebar__inner{ top:46px; }
+}
+
+/* Logo + version: stack vertically so caption sits UNDER the logo */
+body.toplevel_page_blitz-dock .bdp-header{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:6px;
+  padding:15px 8px 12px;
+}
+body.toplevel_page_blitz-dock .bdp-header__logo{ max-width:150px; height:auto; display:block; }
+body.toplevel_page_blitz-dock .bdp-header__caption{
+  font-size:11px; letter-spacing:.08em; color:#7A8A9A; text-transform:uppercase;
+}
+
+/* Tabs: keep as-is but ensure no horizontal scrollbars appear */
+body.toplevel_page_blitz-dock .bdp-tabs{ list-style:none; margin:6px 0 0; padding:0; }
+body.toplevel_page_blitz-dock .bdp-tab{ width:100%; box-sizing:border-box; }
+
+/* Right content column guard */
+body.toplevel_page_blitz-dock .bdp-content{ min-width:0; padding-right:24px; }
+body.toplevel_page_blitz-dock .bdp-content [role="tabpanel"]{ display:block; }
+body.toplevel_page_blitz-dock .bdp-content [role="tabpanel"][hidden]{ display:none !important; }
+
+/* =============================================================
+   Blitz Dock — Modern Left Nav (match reference)
+   - Inter 14/20
+   - Medium (500) labels; Active = 600
+   - Pill backgrounds, larger radius
+   - Chevron indicator at right
+   - Scoped to Blitz Dock screen only
+   ============================================================= */
+body.toplevel_page_blitz-dock .bdp-tab{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 44px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: transparent;
+  transition: background .15s ease;
+  box-sizing: border-box;
+}
+body.toplevel_page_blitz-dock .bdp-tab__icon{
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  object-fit: contain;
+}
+body.toplevel_page_blitz-dock .bdp-tab__label{
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 400;      /* default: medium */
+  color: #001327;
+}
+/* Active (current page) */
+body.toplevel_page_blitz-dock .bdp-tab[aria-selected="true"]{
+  background: #EAEFF6;
+}
+body.toplevel_page_blitz-dock .bdp-tab[aria-selected="true"] .bdp-tab__label{
+  font-weight: 600;      /* semibold */
+  color: #001327;
+}
+/* Hover */
+body.toplevel_page_blitz-dock .bdp-tab:hover{
+  background: #F2F6FB;
+}
+body.toplevel_page_blitz-dock .bdp-tab:hover .bdp-tab__label{
+  color: #001327;
+}
+/* Chevron at the end (reference style) */
+body.toplevel_page_blitz-dock .bdp-tab::after{
+  content: '›';
+  margin-left: auto;
+  font-size: 18px;
+  line-height: 1;
+  opacity: .45;
+}
+body.toplevel_page_blitz-dock .bdp-tab:hover::after{ opacity: .6; }
+body.toplevel_page_blitz-dock .bdp-tab[aria-selected="true"]::after{ opacity: .75; }
+/* Spacing */
+body.toplevel_page_blitz-dock .bdp-tabs{ margin-top: 8px; }
+body.toplevel_page_blitz-dock .bdp-tabs li{ margin: 6px 0; }
