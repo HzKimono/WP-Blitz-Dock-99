@@ -5,14 +5,14 @@
   --status-canceled:#f44336;
 }
 
-/* Sosyal satır */
+/* Social row */
 .bdp-social-row {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 10px;
 }
-/* Online mağaza satırı - sosyal ile aynı */
+/* Online store row - same as social */
 .bdp-ecomm-row {
   display: flex;
   align-items: center;
@@ -70,7 +70,7 @@
 .bdp-remove-link:hover {
   color: #a71d2a;
 }
-/* E-comm sil butonu - sosyal ile aynı */
+/* E-comm delete button - same as social */
 .bdp-remove-ecomm {
   background: none;
   border: none;
@@ -140,7 +140,7 @@
   to { opacity: 1; }
 }
 
-/* Yeni Bağlantı Ekle */
+/* Add New Link */
 #bdp-add-link {
   background: #e2f3e9;
   color: #198754;
@@ -169,7 +169,7 @@
   background: #cde7d8;
 }
 
-/* Modern sayfa seçimi */
+/* Modern page selection */
 .bdp-page-option {
   display: inline-block;
   padding: 10px 14px;
@@ -219,7 +219,7 @@
   margin-bottom: 1rem;
 }
 
-/* Dock Pozisyonları */
+/* Dock Positions */
 .dock-bottom-right {
   position: fixed;
   bottom: 20px;
@@ -248,7 +248,7 @@
   z-index: 9999;
 }
 
-/* Mobil Uyum */
+/* Mobile Compatibility */
 @media screen and (max-width: 768px) {
   .bdp-dock-wrapper {
     max-width: 95vw;
@@ -278,7 +278,7 @@
   margin-bottom: 20px;
 }
 
-/* Sayfa Görünürlük alanı için özel kısıtlama */
+/* Custom restriction for page visibility area */
 .bdp-section-group.page-visibility {
   background: #fff;
   max-width: 700px;
@@ -394,15 +394,15 @@
 
 /* === Blitz Dock: Status-Based Row Coloring === */
 .bdp-row.status-pending {
-  background-color: #fff8e1; /* Açık sarı */
+  background-color: #fff8e1; /* Light yellow */
   border-left: 4px solid #f1c40f;
 }
 .bdp-row.status-completed {
-  background-color: #e8f5e9; /* Açık yeşil */
+  background-color: #e8f5e9; /* Light green */
   border-left: 4px solid #2ecc71;
 }
 .bdp-row.status-canceled {
-  background-color: #fdecea; /* Açık kırmızı */
+  background-color: #fdecea; /* Light red */
   border-left: 4px solid #e74c3c;
 }
 .bdp-row td {
@@ -413,17 +413,17 @@
 }
 /* === Blitz Dock: Status-Based Row Coloring (Override WP Zebra) === */
 table.wp-list-table .bdp-row.status-pending {
-  background-color: #fff8e1 !important;   /* Açık sarı */
+  background-color: #fff8e1 !important;  /* Light yellow */
   border-left: 4px solid #f1c40f;
 }
 
 table.wp-list-table .bdp-row.status-completed {
-  background-color: #e8f5e9 !important;   /* Açık yeşil */
+  background-color: #e8f5e9 !important;   /* Light green */
   border-left: 4px solid #2ecc71;
 }
 
 table.wp-list-table .bdp-row.status-canceled {
-  background-color: #fdecea !important;   /* Açık kırmızı */
+  background-color: #fdecea !important;   /* Light red */
   border-left: 4px solid #e74c3c;
 }
 
@@ -606,13 +606,13 @@ table.wp-list-table .bdp-row:hover {
 .bdp-status-label.canceled{color:var(--status-canceled);}
 /* ==== Status-based Chart Background ==== */
 .bdp-chart-wrap.status-completed {
-  background-color: rgba(76, 175, 80, 0.1); /* Yeşil */
+ background-color: rgba(76, 175, 80, 0.1); /* Green */
 }
 .bdp-chart-wrap.status-pending {
-  background-color: rgba(255, 152, 0, 0.1); /* Turuncu */
+  background-color: rgba(255, 152, 0, 0.1); /* Orange */
 }
 .bdp-chart-wrap.status-canceled {
-  background-color: rgba(244, 67, 54, 0.1); /* Kırmızı */
+  background-color: rgba(244, 67, 54, 0.1); /* Red */
 }
 /* === Blitz Dock Header Logo === */
 .bdp-header-logo {

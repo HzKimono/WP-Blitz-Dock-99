@@ -1,4 +1,5 @@
-/* === Blitz Dock v1.1 – Revize Edilmiş CSS === */
+/* === Blitz Dock v1.1 – Revised CSS === */
+
 
 /* -----------------------------------------------
    0) Base: Global Typography & Reset
@@ -67,7 +68,7 @@ button {
    ----------------------------------------------- */
 #bdp-chat-panel {
   position: fixed;
-  bottom: 86px; /* toggle(56px) + bottom(20px) + boşluk(10px) */
+ bottom: 86px; /* toggle(56px) + bottom(20px) + spacing(10px) */
   right: 20px;
   width: 360px;
   height: 500px;

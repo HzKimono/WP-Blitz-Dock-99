@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
+  const { __ } = wp.i18n;
 
-  // TAB SWITCHING␊
+  // TAB SWITCHING
   const tabs = document.querySelectorAll('.bdp-tabs button');
   const panels = document.querySelectorAll('.bdp-tab-panel');
   tabs.forEach(tab => {
@@ -14,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // ==== SOSYAL MEDYA REPEATER ====
+   // ==== SOCIAL MEDIA REPEATER ====
   const addSocialBtn    = document.getElementById('bdp-add-link');
   const socialContainer = document.getElementById('bdp-social-links');
   const socialPlatforms = pluginData.socialPlatforms || {};
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
       msg.id = 'no-social-message';
       msg.style.color = '#888';
       msg.style.margin = '1em 0';
-      msg.innerText = 'Henüz sosyal medya bağlantısı eklenmemiş. Eklemek için butona tıklayın.';
+      msg.innerText = __('No social media links added yet. Click the button to add one.', 'blitz-dock');
       socialContainer.after(msg);
     }
   }
@@ -47,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
       removeEmptyInfoMsg();
       const row = document.createElement('div');
       row.className = 'bdp-social-row';
-      let options = '<option value="">Platform Seç</option>';
+      let options = '<option value="">' + __('Select Platform', 'blitz-dock') + '</option>';
       Object.keys(socialPlatforms).forEach(key => {
         const label = socialPlatforms[key];
         options += `<option value="${key}">${label}</option>`;
@@ -55,8 +56,8 @@ document.addEventListener('DOMContentLoaded', function () {
       row.innerHTML = `
         <img src="${pluginData.iconsBaseURL}default.png" width="24" height="24">
         <select name="bdp_social_links[0][platform]">${options}</select>
-        <input type="url" name="bdp_social_links[0][url]" placeholder="https://">
-        <button type="button" class="button bdp-remove-link">Sil</button>
+       <input type="url" name="bdp_social_links[0][url]" placeholder="https://">
+        <button type="button" class="button bdp-remove-link">${__( 'Delete', 'blitz-dock' )}</button>
       `;
       socialContainer.appendChild(row);
       reindexSocialRows();
@@ -110,14 +111,14 @@ document.addEventListener('DOMContentLoaded', function () {
       card.className = 'bdp-faq-card';
       card.innerHTML = `
         <div class="bdp-faq-field">
-          <label class="bdp-faq-label">Add a Question</label>
-          <input type="text" placeholder="Question">
+          <label class="bdp-faq-label">${__( 'Add a Question', 'blitz-dock' )}</label>
+          <input type="text" placeholder="${__( 'Question', 'blitz-dock' )}">
         </div>
         <div class="bdp-faq-field">
-          <label class="bdp-faq-label">Provide an Answer</label>
-          <textarea rows="3" placeholder="Answer"></textarea>
+          <label class="bdp-faq-label">${__( 'Provide an Answer', 'blitz-dock' )}</label>
+          <textarea rows="3" placeholder="${__( 'Answer', 'blitz-dock' )}"></textarea>
         </div>
-        <button type="button" class="button bdp-remove-faq">Remove</button>
+        <button type="button" class="button bdp-remove-faq">${__( 'Remove', 'blitz-dock' )}</button>
       `;
       faqContainer.appendChild(card);
       reindexFaqRows();
@@ -131,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // ==== ONLINE MAĞAZALAR REPEATER ====
+   // ==== ONLINE STORES REPEATER ====
   const addEcommBtn    = document.getElementById('bdp-add-ecomm');
   const ecommContainer = document.getElementById('bdp-ecomm-items');
   const ecommPlatforms = ['amazon','hepsiburada','sahibinden','shopify','temu','trendyol'];
@@ -152,13 +153,13 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   if (addEcommBtn && ecommContainer) {
-    // İlk yüklemede mevcut satırlar için ikonları güncelle
+    // Update icons for existing rows on load
     ecommContainer.querySelectorAll('.bdp-ecomm-row').forEach(updateEcommIcon);
 
     addEcommBtn.addEventListener('click', () => {
       const row = document.createElement('div');
       row.className = 'bdp-ecomm-row';
-      let options = '<option value="">Platform Seç</option>';
+     let options = '<option value="">' + __('Select Platform', 'blitz-dock') + '</option>';
       ecommPlatforms.forEach(p => {
         const label = p.charAt(0).toUpperCase() + p.slice(1);
         options += `<option value="${p}">${label}</option>`;
@@ -166,8 +167,8 @@ document.addEventListener('DOMContentLoaded', function () {
       row.innerHTML = `
         <img src="${pluginData.ecommIconsBaseURL}default.png" width="24" height="24" class="bdp-ecomm-icon">
         <select name="bdp_ecomm_links[0][name]" class="bdp-ecomm-select">${options}</select>
-        <input type="url" name="bdp_ecomm_links[0][url]" placeholder="https://">
-        <button type="button" class="button bdp-remove-ecomm">Sil</button>`;
+         <input type="url" name="bdp_ecomm_links[0][url]" placeholder="https://">
+        <button type="button" class="button bdp-remove-ecomm">${__( 'Delete', 'blitz-dock' )}</button>`;
       ecommContainer.appendChild(row);
       updateEcommIcon(row);
       reindexEcommRows();
