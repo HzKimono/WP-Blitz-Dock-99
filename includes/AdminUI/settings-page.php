@@ -158,7 +158,8 @@ foreach ( $tabs as $slug => $label ) {
                 role="tab"
                 aria-controls="panel-<?php echo esc_attr( $slug ); ?>"
                 aria-selected="<?php echo esc_attr( $active ); ?>"
-                tabindex="<?php echo ( 'true' === $active ) ? '0' : '-1'; ?>">
+                  tabindex="<?php echo ( 'true' === $active ) ? '0' : '-1'; ?>"
+                data-label="<?php echo esc_attr( wp_strip_all_tags( $label ) ); ?>">
                 <img class="bdp-tab__icon"
                      src="<?php echo esc_url( BLITZ_DOCK_URL . 'assets/icons/menu/' . $icon ); ?>"
                      alt="" aria-hidden="true">
@@ -172,12 +173,29 @@ foreach ( $tabs as $slug => $label ) {
   </aside>
 
   <main class="bdp-content" id="bdp-content" tabindex="-1">
+      <header class="bdp-toolbar" role="region" aria-labelledby="bdp-toolbar-title">
+      <div class="bdp-toolbar__slot bdp-toolbar__slot--left">
+        <h1 id="bdp-toolbar-title" class="bdp-toolbar__title">
+          <span class="bdp-toolbar__plugin">Blitz Dock v<?php echo esc_html( BLITZ_DOCK_VERSION ); ?></span>
+          <span class="bdp-toolbar__sep">—</span>
+          <span class="bdp-toolbar__panel" id="bdp-active-panel-title">Dashboard</span>
+        </h1>
+      </div>
+
+      <div class="bdp-toolbar__slot bdp-toolbar__slot--center" id="bdp-toolbar-center">
+        <!-- reserved for future breadcrumbs/search -->
+      </div>
+
+      <div class="bdp-toolbar__slot bdp-toolbar__slot--right" id="bdp-toolbar-actions">
+        <!-- reserved for future action buttons -->
+      </div>
+    </header>
+
     <div id="panel-dashboard" role="tabpanel" aria-labelledby="tab-dashboard">
       <?php
         $msg_table  = $wpdb->prefix . 'bdp_messages';
         $msg_count  = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$msg_table}" );
       ?>
-      <h2>Blitz Dock v<?php echo BLITZ_DOCK_VERSION; ?></h2>
       <div class="bdp-messages-card">
         <div class="bdp-card-header">
           <div>
@@ -429,6 +447,7 @@ foreach ( $tabs as $slug => $label ) {
       echo '</div>';
     }
     ?>
+     </section>
   </main>
 
 </div>

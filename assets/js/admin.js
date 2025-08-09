@@ -1,15 +1,22 @@
 (function(){
   const { __ } = wp.i18n;
 
-  const tablist = document.querySelector('.bdp-admin-layout .bdp-tabs');
+ const tablist = document.querySelector('.bdp-admin-layout .bdp-tabs');
   if(tablist){
     const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
     const content = document.querySelector('.bdp-admin-layout .bdp-content');
     const panels = content ? Array.from(content.querySelectorAll('[role="tabpanel"]')) : [];
+    const title = document.getElementById('bdp-active-panel-title');
+
+    function setHeaderFrom(btn){
+      if(title && btn?.dataset?.label){
+        title.textContent = btn.dataset.label;
+      }
+    }
 
     tabs.forEach(t => t.setAttribute('tabindex', t.getAttribute('aria-selected') === 'true' ? '0' : '-1'));
     const selected = tabs.find(t => t.getAttribute('aria-selected') === 'true') || tabs[0];
-    if(selected){ showPanel(selected.getAttribute('aria-controls')); }
+    if(selected){ showPanel(selected.getAttribute('aria-controls')); setHeaderFrom(selected); }
 
     tablist.addEventListener('click', (e) => {
       const btn = e.target.closest('[role="tab"]');
@@ -29,11 +36,13 @@
       if(e.key==='Enter' || e.key===' '){ e.preventDefault(); activate(cur); }
     });
 
-    function activate(btn){
+   function activate(btn){
       tabs.forEach(t => { t.setAttribute('aria-selected','false'); t.setAttribute('tabindex','-1'); });
       btn.setAttribute('aria-selected','true'); btn.setAttribute('tabindex','0');
       showPanel(btn.getAttribute('aria-controls'));
+      setHeaderFrom(btn);
     }
+
 
     function showPanel(id){
       panels.forEach(p => p.hidden = (p.id !== id));

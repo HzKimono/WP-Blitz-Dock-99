@@ -22,7 +22,9 @@ body.toplevel_page_blitz-dock #wpbody-content{ padding-bottom:0; }  /* avoid ext
   --bdp-color-hover:#F0F3F7;
   --bdp-color-active:#EAEFF6;
   --bdp-color-bg:#FFFFFF;
-
+  --bdp-toolbar-height: 80px;
+  --bdp-toolbar-bg: #EAEFF6;
+  --bdp-toolbar-border: #dfe4ea;
   --wp-admin-bar:32px;
 
   display:grid;
@@ -84,7 +86,46 @@ body.toplevel_page_blitz-dock #wpbody-content{ padding-bottom:0; }  /* avoid ext
 .bdp-tab__icon{ width:var(--bdp-icon-size); height:var(--bdp-icon-size); flex:0 0 var(--bdp-icon-size); }
 
 /* Right column */
+
 .bdp-content{ min-width:0; padding-right:24px; }
+
+/* The 80px top toolbar */
+.bdp-toolbar{
+  display: grid;
+  grid-template-columns: 1fr 1fr auto; /* left / center / right */
+  align-items: center;
+  height: var(--bdp-toolbar-height);
+  background: var(--bdp-toolbar-bg);
+  border: 1px solid var(--bdp-toolbar-border);
+  border-radius: 10px;
+  padding: 0 16px;
+  margin: 0 12px 16px 0;
+  box-sizing: border-box;
+
+  position: sticky;
+  top: var(--wp-admin-bar);
+  z-index: 100;
+}
+
+/* Slots */
+.bdp-toolbar__slot{ display:flex; align-items:center; gap:12px; min-width:0; }
+.bdp-toolbar__slot--center{ justify-content:center; }
+.bdp-toolbar__slot--right{ justify-content:flex-end; }
+
+/* Title */
+.bdp-toolbar__title{ margin:0; font-size:16px; font-weight:600; line-height:1; color:#1d2327; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bdp-toolbar__plugin{ color:#1d2327; }
+.bdp-toolbar__sep{ margin:0 6px; color:#8c8f94; }
+.bdp-toolbar__panel{ color:#1d2327; }
+
+/* Ensure content never slips under toolbar */
+.bdp-panels{ margin-top:0; }
+
+/* Responsive: collapse center slot on narrow widths */
+@media (max-width:1024px){
+  .bdp-toolbar{ grid-template-columns: 1fr auto; }
+  .bdp-toolbar__slot--center{ display:none; }
+}
 
 
 .bdp-content [role="tabpanel"]{ display:block; }
@@ -802,3 +843,101 @@ body.toplevel_page_blitz-dock .bdp-tab[aria-selected="true"]::after{ opacity: .7
 /* Spacing */
 body.toplevel_page_blitz-dock .bdp-tabs{ margin-top: 8px; }
 body.toplevel_page_blitz-dock .bdp-tabs li{ margin: 6px 0; }
+
+
+/* ===================== Blitz Dock – Admin CSS Overrides (v1.4 final) ===================== */
+/* Scope: only the Blitz Dock top-level admin page */
+body.toplevel_page_blitz-dock .wrap { margin: 0; padding: 0; }
+body.toplevel_page_blitz-dock #wpfooter { display: none; }
+body.toplevel_page_blitz-dock #wpbody-content { padding-bottom: 0; }
+body.toplevel_page_blitz-dock #wpcontent { padding-left: 0 !important; }
+body.auto-fold.toplevel_page_blitz-dock #wpcontent { padding-left: 0 !important; }
+body.folded.toplevel_page_blitz-dock #wpcontent { padding-left: 0 !important; }
+
+/* Ensure the two-column layout tokens and toolbar variables */
+.bdp-admin-layout{
+  --bdp-toolbar-height: 80px;
+  --bdp-toolbar-bg: #FFFFFF;
+  --bdp-toolbar-border: #e6e9ee;
+  --wp-admin-bar: 32px;
+}
+@media (max-width:782px){
+  .bdp-admin-layout{ --wp-admin-bar: 46px; }
+}
+
+/* Sidebar: make inner sticky without inner scrollbars; background stays on parent so column fills full height */
+.bdp-sidebar__inner{
+  position: sticky;
+  top: var(--wp-admin-bar);
+  max-height: none;
+  overflow: visible;
+  overflow-x: hidden;
+}
+
+/* Header: stack vertically (logo on top, version caption under it) */
+.bdp-header{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+.bdp-header__caption{
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+/* Right column: let toolbar span full width; give panels their own gutter */
+.bdp-content{ min-width: 0; padding-right: 0; }
+.bdp-panels{ margin-top: 0; padding-right: 24px; box-sizing: border-box; }
+
+/* Sticky 80px toolbar – full width inside right column, white background */
+.bdp-toolbar{
+  height: var(--bdp-toolbar-height) !important;
+  min-height: var(--bdp-toolbar-height) !important;
+  background: var(--bdp-toolbar-bg);
+  border: 1px solid var(--bdp-toolbar-border);
+  border-radius: 10px;
+  padding: 0 16px;
+  margin: 0 0 16px 0;             /* remove right gap so it spans the column */
+  display: grid;
+  grid-template-columns: 1fr 1fr auto; /* left / center / right slots */
+  align-items: center;
+  position: sticky;
+  top: var(--wp-admin-bar);
+  z-index: 200;
+  box-sizing: border-box;         /* include border/padding in height */
+}
+.bdp-toolbar__slot{ display:flex; align-items:center; gap:12px; min-width:0; }
+.bdp-toolbar__slot--center{ justify-content:center; }
+.bdp-toolbar__slot--right{ justify-content:flex-end; }
+
+/* Title in toolbar */
+.bdp-toolbar__title{ margin:0; font-size:16px; font-weight:600; line-height:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bdp-toolbar__sep{ margin:0 6px; color:#8c8f94; }
+
+/* Responsive: collapse center slot on narrower viewports */
+@media (max-width:1024px){
+  .bdp-toolbar{ grid-template-columns: 1fr auto; }
+  .bdp-toolbar__slot--center{ display:none; }
+}
+/* ========================================================================================= */
+/* --- Blitz Dock: toolbar edge-to-edge + square corners --- */
+
+/* 1) Sağ–sol boşluğu tamamen kaldır */
+.bdp-admin-layout{ gap: 0; }                   /* kolonlar arası boşluk = 0 */
+.bdp-content{ padding-left: 0 !important;      /* iç kolon paddingleri = 0 */
+              padding-right: 0 !important; }
+
+/* 2) Toolbar tam kolon genişliği ve köşeler düz */
+.bdp-toolbar{
+  margin: 0 !important;                        /* dış boşluk yok */
+  width: 100% !important;
+  border-radius: 0 !important;                 /* yuvarlak köşe yok */
+  background: #fff;                             /* beyaz zemin (istenen) */
+  height: var(--bdp-toolbar-height, 80px) !important;
+  min-height: var(--bdp-toolbar-height, 80px) !important;
+}
+
+/* Panellerdeki sağ boşluğu korumak istiyorsan: */
+.bdp-panels{ padding-right: 24px; }
