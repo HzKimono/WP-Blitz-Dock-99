@@ -987,3 +987,62 @@ body.folded.toplevel_page_blitz-dock #wpcontent { padding-left: 0 !important; }
 
 /* Hide any legacy title element if it still exists */
 .bdp-toolbar__title{ display:none !important; }
+
+/* === Blitz Dock – Global Typography (Inter) ================================== */
+/* Scope to the Blitz Dock top-level admin page */
+body.toplevel_page_blitz-dock,
+body.toplevel_page_blitz-dock .bdp-admin-layout{
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  font-weight: 400;
+  font-size: 13px;      /* base copy */
+  line-height: 1.5;
+}
+
+/* Ensure all UI controls and headings inherit Inter 400 */
+body.toplevel_page_blitz-dock h1,
+body.toplevel_page_blitz-dock h2,
+body.toplevel_page_blitz-dock h3,
+body.toplevel_page_blitz-dock h4,
+body.toplevel_page_blitz-dock h5,
+body.toplevel_page_blitz-dock h6,
+body.toplevel_page_blitz-dock input,
+body.toplevel_page_blitz-dock select,
+body.toplevel_page_blitz-dock textarea,
+body.toplevel_page_blitz-dock button,
+body.toplevel_page_blitz-dock .wp-core-ui .button,
+body.toplevel_page_blitz-dock .wp-core-ui .button-primary{
+  font-family: inherit;
+  font-weight: 400;
+}
+
+/* Left sidebar labels */
+body.toplevel_page_blitz-dock .bdp-tab__label{ font-weight: 400; }
+
+/* Breadcrumb typography + accent color */
+.bdp-admin-layout{
+  --bdp-accent: #ff5e0d;            /* active tab color */
+  --bdp-crumb-size: 15px;           /* Blitz Dock v1.4 */
+  --bdp-crumb-weight: 400;
+  --bdp-crumb-current-size: 13px;   /* Active tab */
+  --bdp-crumb-current-weight: 400;
+}
+
+/* Apply exact sizes/weights */
+.bdp-toolbar{ font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
+.bdp-crumb-plugin{
+  font-size: var(--bdp-crumb-size);
+  font-weight: var(--bdp-crumb-weight);
+}
+.bdp-crumb-current{
+  font-size: var(--bdp-crumb-current-size);
+  font-weight: var(--bdp-crumb-current-weight);
+  color: var(--bdp-accent);
+}
+
+/* Make sure the separator looks like » and aligns well (already present; keep or add) */
+.bdp-breadcrumb__sep::before{
+  content: "»";
+  color: #c3c4c7;
+  font-size: var(--bdp-crumb-size);
+  line-height: 1;
+}

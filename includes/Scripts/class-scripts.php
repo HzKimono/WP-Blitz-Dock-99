@@ -71,13 +71,22 @@ class Scripts {
     /**
      * Admin Panel: CSS + JS + Data
      */
-    public function enqueue_admin_assets() {
+   public function enqueue_admin_assets() {
         wp_enqueue_style(
             'blitz-dock-admin-style',
             BLITZ_DOCK_URL . 'assets/css/admin.css',
             [],
             BLITZ_DOCK_VERSION
         );
+
+        if ( isset( $_GET['page'] ) && $_GET['page'] === 'blitz-dock' ) {
+            wp_enqueue_style(
+                'bdp-inter',
+                'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap',
+                [],
+                null
+            );
+        }
 
         wp_enqueue_script(
             'blitz-dock-admin-script',
