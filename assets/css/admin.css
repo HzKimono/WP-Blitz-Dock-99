@@ -1046,3 +1046,116 @@ body.toplevel_page_blitz-dock .bdp-tab__label{ font-weight: 400; }
   font-size: var(--bdp-crumb-size);
   line-height: 1;
 }
+/* Spacing tokens (adjust here if you want different spacing) */
+:root{
+  --bdp-kpi-gap-top: 60px;   /* space below sticky toolbar */
+  --bdp-kpi-gap-x:   60px;   /* symmetric left/right padding */
+}
+@media (min-width: 1200px){
+  :root{ --bdp-kpi-gap-top: 40px; --bdp-kpi-gap-x: 40px; }
+}
+@media (max-width: 781.98px){
+  :root{ --bdp-kpi-gap-x: 24px; }  /* tighter on small screens */
+}
+
+/* Primary rule: cards container placed AFTER the toolbar (not inside) */
+.bdp-toolbar + .bdp-cards{
+  margin-top: var(--bdp-kpi-gap-top);
+  padding-left: var(--bdp-kpi-gap-x);
+  padding-right: var(--bdp-kpi-gap-x);
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 24px;
+}
+
+/* Fallbacks: some layouts wrap content; always enforce spacing for Dashboard */
+body.toplevel_page_blitz-dock #panel-dashboard .bdp-cards,
+body.toplevel_page_blitz-dock .bdp-content .bdp-cards{
+  margin-top: var(--bdp-kpi-gap-top) !important;
+  padding-left: var(--bdp-kpi-gap-x) !important;
+  padding-right: var(--bdp-kpi-gap-x) !important;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 24px;
+}
+
+/* Optional: breathing room before the chart below */
+body.toplevel_page_blitz-dock #panel-dashboard .bdp-cards{ margin-bottom: 24px; }
+
+/* ========================================================================
+   Card component
+   ======================================================================== */
+
+.bdp-card{
+  width: 380px;
+  height: 200px;
+  background: #fff;
+  border: 1px solid #e6e9ee;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.05);
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Header with icon bubble + more menu */
+.bdp-card__head{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.bdp-card__icon{
+  width: 44px; height: 44px; flex: 0 0 44px;
+  border-radius: 50%;
+  background: #eef2f6;
+  display: flex; align-items: center; justify-content: center;
+}
+.bdp-card__icon img{
+  width: 22px; height: 22px; opacity: .65;
+}
+.bdp-card__more{
+  margin-left: auto;
+  background: none; border: 0; cursor: pointer;
+  color: #9aa4af; font-size: 18px; line-height: 1;
+}
+
+/* Title & subtitle */
+.bdp-card__value{
+  font: 600 24px/1.1 Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  color: #283C50;
+}
+.bdp-card__subtitle{
+  font: 500 13px/1.4 Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  color: #6B7885;
+}
+
+/* Footer row + progress bar */
+.bdp-card__foot{
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+.bdp-card__label{
+  color: #6B7885;
+  font: 500 13px/1 Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+.bdp-card__stat{
+  color: #283C50;
+  font: 600 13px/1 Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+.bdp-card__bar{
+  grid-column: 1 / -1;
+  height: 6px; background: #edf1f6; border-radius: 3px;
+  position: relative; overflow: hidden;
+}
+.bdp-card__bar__fill{
+  position: absolute; inset: 0 auto 0 0;
+  width: 0; background: #3b6fff; border-radius: 3px;
+  transition: width .25s ease;
+}

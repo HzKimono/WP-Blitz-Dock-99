@@ -14,6 +14,10 @@ class Plugin {
     }
 
     private function load_dependencies() {
+      // Catalog & reports
+        require_once BLITZ_DOCK_PATH . 'includes/Core/class-catalog.php';
+        require_once BLITZ_DOCK_PATH . 'includes/Reports/class-dashboard-metrics.php';
+
         // Admin
         require_once BLITZ_DOCK_PATH . 'includes/AdminUI/class-admin.php';
 

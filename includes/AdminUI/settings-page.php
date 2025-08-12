@@ -198,35 +198,7 @@ foreach ( $tabs as $slug => $label ) {
     </header>
 
     <div id="panel-dashboard" role="tabpanel" aria-labelledby="tab-dashboard">
-      <?php
-        $msg_table  = $wpdb->prefix . 'bdp_messages';
-        $msg_count  = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$msg_table}" );
-      ?>
-      <div class="bdp-messages-card">
-        <div class="bdp-card-header">
-          <div>
-            <h3>Total Messages</h3>
-            <small>Last 7 days</small>
-          </div>
-        <div class="bdp-total-count"><?php echo esc_html( $total_7d ); ?></div>
-        </div>
-        <div class="bdp-chart-wrap">
-          <canvas id="bdp-messages-chart" height="80"></canvas>
-        </div>
-        <div class="bdp-status-breakdown">
-          <button type="button" class="bdp-status-label completed" data-status="completed" aria-pressed="false">Completed <?php echo esc_html( $completed_7d ); ?> (<?php echo esc_html( $completed_pct ); ?>%)</button>
-          <button type="button" class="bdp-status-label pending" data-status="pending" aria-pressed="false">Pending <?php echo esc_html( $pending_7d ); ?> (<?php echo esc_html( $pending_pct ); ?>%)</button>
-          <button type="button" class="bdp-status-label canceled" data-status="canceled" aria-pressed="false">Canceled <?php echo esc_html( $canceled_7d ); ?> (<?php echo esc_html( $canceled_pct ); ?>%)</button>
-        </div>
-      </div>
-     <script>
-        window.bdpDashboardData = <?php echo wp_json_encode( [
-            'labels'    => $chart_labels,
-            'completed' => $chart_values['completed'],
-            'pending'   => $chart_values['pending'],
-            'canceled'  => $chart_values['canceled'],
-        ] ); ?>;
-      </script>
+           <?php include BLITZ_DOCK_PATH . 'includes/AdminUI/dashboard-page.php'; ?>
     </div>
 
    <form method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" enctype="multipart/form-data">
