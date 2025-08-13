@@ -1052,7 +1052,7 @@ body.toplevel_page_blitz-dock .bdp-tab__label{ font-weight: 400; }
   --bdp-kpi-gap-x:   60px;   /* symmetric left/right padding */
 }
 @media (min-width: 1200px){
-  :root{ --bdp-kpi-gap-top: 40px; --bdp-kpi-gap-x: 40px; }
+  :root{ --bdp-kpi-gap-top: 20px; --bdp-kpi-gap-x: 20px; }
 }
 @media (max-width: 781.98px){
   :root{ --bdp-kpi-gap-x: 24px; }  /* tighter on small screens */
@@ -1159,3 +1159,8 @@ body.toplevel_page_blitz-dock #panel-dashboard .bdp-cards{ margin-bottom: 24px; 
   width: 0; background: #3b6fff; border-radius: 3px;
   transition: width .25s ease;
 }
+:root{ --bdp-bar-blue:#2667ff; --bdp-bar-orange:#f59e0b; --bdp-bar-green:#10b981; }
+.bdp-card__bar__fill{ background-color: var(--bdp-bar-blue); }
+.bdp-card__bar.is-tier-1 .bdp-card__bar__fill,
+.bdp-card__bar.is-tier-2 .bdp-card__bar__fill{ background-color: var(--bdp-bar-orange); }
+.bdp-card__bar.is-tier-3 .bdp-card__bar__fill{ background-color: var(--bdp-bar-green); }

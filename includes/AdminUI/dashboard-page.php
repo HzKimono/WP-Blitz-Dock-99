@@ -3,7 +3,17 @@ use BlitzDock\Reports\Dashboard_Metrics;
 
 defined('ABSPATH') || exit;
 
-$card = Dashboard_Metrics::social_links_overview(7);
+$kpi        = Dashboard_Metrics::social_links_overview(7);
+$milestones = (array) apply_filters( 'blitz_dock_click_milestones', [100, 200, 300] );
+$bar_class  = '';
+$clicks     = (int) $kpi['clicks'];
+if ( $clicks >= (int) ( $milestones[2] ?? 300 ) ) {
+    $bar_class = 'is-tier-3';
+} elseif ( $clicks >= (int) ( $milestones[1] ?? 200 ) ) {
+    $bar_class = 'is-tier-2';
+} elseif ( $clicks >= (int) ( $milestones[0] ?? 100 ) ) {
+    $bar_class = 'is-tier-1';
+}
 ?>
 <div class="bdp-cards" role="region" aria-label="<?php esc_attr_e('Dashboard KPIs','blitz-dock'); ?>">
   <article class="bdp-card" aria-label="<?php esc_attr_e('Social Links Overview','blitz-dock'); ?>">
@@ -13,7 +23,7 @@ $card = Dashboard_Metrics::social_links_overview(7);
              alt="" aria-hidden="true" />
       </span>
       <div class="bdp-card__title">
-        <div class="bdp-card__value"><?php echo esc_html( $card['active'] . '/' . $card['total'] ); ?></div>
+        <div class="bdp-card__value"><?php echo esc_html( $kpi['active'] . '/' . $kpi['total'] ); ?></div>
         <div class="bdp-card__subtitle"><?php esc_html_e('Social Links','blitz-dock'); ?></div>
       </div>
       <button type="button" class="bdp-card__more" aria-label="<?php esc_attr_e('More options','blitz-dock'); ?>">⋮</button>
@@ -21,8 +31,10 @@ $card = Dashboard_Metrics::social_links_overview(7);
 
     <footer class="bdp-card__foot">
       <span class="bdp-card__label"><?php esc_html_e('Clicks (last 7 days):','blitz-dock'); ?></span>
-      <span class="bdp-card__stat"><?php echo number_format_i18n( (int) $card['clicks'] ); ?></span>
-      <div class="bdp-card__bar"><span class="bdp-card__bar__fill" style="width: <?php echo (int) $card['coverage']; ?>%"></span></div>
+      <span class="bdp-card__stat"><?php echo number_format_i18n( (int) $kpi['clicks'] ); ?></span>
+      <div class="bdp-card__bar <?php echo esc_attr( $bar_class ); ?>" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<?php echo (int) $kpi['progress']; ?>" aria-label="<?php esc_attr_e('Clicks progress','blitz-dock'); ?>">
+        <span class="bdp-card__bar__fill" style="width:<?php echo (int) $kpi['progress']; ?>%"></span>
+      </div>
     </footer>
   </article>
 

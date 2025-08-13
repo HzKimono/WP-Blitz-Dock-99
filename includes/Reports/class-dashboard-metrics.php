@@ -6,52 +6,61 @@ use BlitzDock\Core\Catalog;
 defined('ABSPATH') || exit;
 
 class Dashboard_Metrics {
-    /** Social Links: {active}/{total_supported} and 7-day clicks */
-    public static function social_links_overview(int $days = 7): array {
+    /**
+     * Returns Social Links metrics for the dashboard card.
+     *
+     * @param int $days Number of days to look back for clicks.
+     * @return array{active:int,total:int,clicks:int,progress:int}
+     */
+    public static function social_links_overview( $days = 7 ) {
         $catalog = Catalog::get_social_platforms();
-        $total_supported = is_array($catalog) ? count($catalog) : 0;
+        $total   = is_array( $catalog ) ? count( $catalog ) : 0;
 
-        // Active = configured/enabled links in options (adjust key/shape to your plugin)
-        $links  = get_option('bdp_social_links', []); // replace with your real option key
-        $active = 0;
-        if (is_array($links)) {
-            foreach ($links as $link) {
-                $url = isset($link['url']) ? trim((string)$link['url']) : '';
-                $en  = !empty($link['enabled']);
-                if ($url !== '' || $en) {
-                    $active++;
+        // Count unique active social links (non-empty URL).
+        $links  = get_option( 'bdp_social_links', [] );
+        $uniq   = [];
+        if ( is_array( $links ) ) {
+            foreach ( $links as $item ) {
+                $slug = sanitize_key( $item['platform'] ?? '' );
+                $url  = trim( $item['url'] ?? '' );
+                if ( $slug && '' !== $url ) {
+                    $uniq[ $slug ] = true;
                 }
             }
         }
+        $active = count( $uniq );
 
-        // Clicks in last N days — prefer your Analytics class/table if available
-        $clicks = 0;
-        $since  = gmdate('Y-m-d H:i:s', strtotime("-{$days} days"));
+        // Clicks in the last N days using the analytics table.
         global $wpdb;
-        $candidates = [
-            $wpdb->prefix.'blitzdock_events'  => ['type','created_at'],
-            $wpdb->prefix.'blitz_dock_events' => ['type','created_at'],
-            $wpdb->prefix.'bdp_analytics'     => ['event_type','created_at'],
-        ];
-        foreach ($candidates as $table => $cols) {
-            $exists = $wpdb->get_var( $wpdb->prepare("SHOW TABLES LIKE %s", $table) );
-            if ($exists === $table) {
-                [$colType,$colDate] = $cols;
-                $clicks = (int) $wpdb->get_var( $wpdb->prepare(
-                    "SELECT COUNT(*) FROM {$table} WHERE {$colDate} >= %s AND {$colType} IN ('social_click','social')",
-                    $since
-                ));
-                break;
-            }
-        }
+        $table = $wpdb->prefix . 'bdp_analytics';
 
-        $coverage = $total_supported ? round($active * 100 / $total_supported) : 0;
+        $event_types = apply_filters( 'blitz_dock_social_event_types', [ 'click' ] );
+        $event_types = array_values( array_unique( (array) $event_types ) );
+        $from        = date( 'Y-m-d H:i:s', current_time( 'timestamp' ) - absint( $days ) * DAY_IN_SECONDS );
+
+        $placeholders = implode( ',', array_fill( 0, count( $event_types ), '%s' ) );
+        $sql          = "SELECT COUNT(*) FROM {$table} WHERE event_type IN ($placeholders) AND event_topic = %s AND created_at >= %s";
+        $params       = array_merge( $event_types, [ 'social_links', $from ] );
+        $clicks       = (int) $wpdb->get_var( $wpdb->prepare( $sql, $params ) );
+
+        // Progress based on target option.
+        $target = (int) get_option( 'bdp_clicks_target', 100 );
+        $target = (int) apply_filters( 'blitz_dock_social_clicks_target', $target );
+        if ( $target <= 0 ) {
+            $target = 100;
+        }
+        $progress = $target > 0 ? (int) round( ( $clicks / $target ) * 100 ) : 0;
+        if ( $progress > 100 ) {
+            $progress = 100;
+        } elseif ( $progress < 0 ) {
+            $progress = 0;
+        }
 
         return [
             'active'   => $active,
-            'total'    => $total_supported,
+            'total'    => $total,
             'clicks'   => $clicks,
-            'coverage' => $coverage,
+            'progress' => $progress,
         ];
     }
 }
