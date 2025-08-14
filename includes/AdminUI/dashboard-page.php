@@ -14,6 +14,17 @@ if ( $clicks >= (int) ( $milestones[2] ?? 300 ) ) {
 } elseif ( $clicks >= (int) ( $milestones[0] ?? 100 ) ) {
     $bar_class = 'is-tier-1';
 }
+
+$kpi_dock   = Dashboard_Metrics::dock_opens_overview( 7 );
+$milestones = (array) apply_filters( 'blitz_dock_click_milestones', [100, 200, 300] );
+$open_class = '';
+if ( (int) $kpi_dock['opens'] >= ( $milestones[2] ?? 300 ) ) {
+    $open_class = 'is-tier-3';
+} elseif ( (int) $kpi_dock['opens'] >= ( $milestones[1] ?? 200 ) ) {
+    $open_class = 'is-tier-2';
+} elseif ( (int) $kpi_dock['opens'] >= ( $milestones[0] ?? 100 ) ) {
+    $open_class = 'is-tier-1';
+}
 ?>
 <div class="bdp-cards" role="region" aria-label="<?php esc_attr_e('Dashboard KPIs','blitz-dock'); ?>">
   <article class="bdp-card" aria-label="<?php esc_attr_e('Social Links Overview','blitz-dock'); ?>">
@@ -35,7 +46,31 @@ if ( $clicks >= (int) ( $milestones[2] ?? 300 ) ) {
       <div class="bdp-card__bar <?php echo esc_attr( $bar_class ); ?>" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<?php echo (int) $kpi['progress']; ?>" aria-label="<?php esc_attr_e('Clicks progress','blitz-dock'); ?>">
         <span class="bdp-card__bar__fill" style="width:<?php echo (int) $kpi['progress']; ?>%"></span>
       </div>
-    </footer>
+   </footer>
+  </article>
+
+  <article class="bdp-card" role="region" aria-label="<?php esc_attr_e('Dock Opens Overview','blitz-dock'); ?>">
+    <header class="bdp-card__head">
+      <span class="bdp-card__icon">
+        <img src="<?php echo esc_url( BLITZ_DOCK_URL . 'assets/icons/menu/menu-analytics.png' ); ?>" alt="" aria-hidden="true" />
+      </span>
+      <div class="bdp-card__title">
+        <div class="bdp-card__value"><?php echo number_format_i18n( (int) $kpi_dock['opens'] ); ?></div>
+        <div class="bdp-card__subtitle"><?php esc_html_e('Dock Opens','blitz-dock'); ?></div>
+      </div>
+      <button type="button" class="bdp-card__more" aria-label="<?php esc_attr_e('More options','blitz-dock'); ?>">⋮</button>
+    </header>
+    <div class="bdp-card__foot">
+      <span class="bdp-card__label"><?php esc_html_e('Opens (last 7 days):','blitz-dock'); ?></span>
+      <span class="bdp-card__stat"><?php echo number_format_i18n( (int) $kpi_dock['opens'] ); ?></span>
+      <div class="bdp-card__bar <?php echo esc_attr( $open_class ); ?>"
+           role="progressbar"
+           aria-valuemin="0" aria-valuemax="100"
+           aria-valuenow="<?php echo (int) $kpi_dock['progress']; ?>"
+           aria-label="<?php esc_attr_e('Dock opens progress','blitz-dock'); ?>">
+        <span class="bdp-card__bar__fill" style="width:<?php echo (int) $kpi_dock['progress']; ?>%"></span>
+      </div>
+    </div>
   </article>
 
   <!-- Future cards (2, 3, 4) will be added here using the same structure -->

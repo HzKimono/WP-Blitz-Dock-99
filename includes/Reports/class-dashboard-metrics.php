@@ -63,4 +63,33 @@ class Dashboard_Metrics {
             'progress' => $progress,
         ];
     }
+
+    /**
+     * Dock Opens KPI (last N days), mirrors Analytics filters exactly.
+     *
+     * @param int $days Number of days to look back for opens.
+     * @return array{opens:int,progress:int}
+     */
+    public static function dock_opens_overview( $days = 7 ) {
+        global $wpdb;
+        $table = $wpdb->prefix . 'bdp_analytics';
+        $from  = date( 'Y-m-d H:i:s', current_time( 'timestamp' ) - absint( $days ) * DAY_IN_SECONDS );
+
+        // Mirror Analytics: event_type='view' AND event_topic='panel_open'
+        $sql   = "SELECT COUNT(*) FROM {$table}
+                WHERE event_type = %s AND event_topic = %s AND created_at >= %s";
+        $opens = (int) $wpdb->get_var( $wpdb->prepare( $sql, 'view', 'panel_open', $from ) );
+
+        // Progress vs target (configurable; default 100)
+        $target = (int) get_option( 'bdp_panel_open_target', 100 );
+        if ( $target <= 0 ) {
+            $target = 100;
+        }
+        $progress = min( 100, max( 0, (int) round( ( $opens / $target ) * 100 ) ) );
+
+        return [
+            'opens'    => $opens,
+            'progress' => $progress,
+        ];
+    }
 }
