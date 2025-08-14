@@ -423,3 +423,145 @@
     });
   }
 })();
+
+(function(){
+  const card = document.querySelector('.bdp-card--messages');
+  if (!card) return;
+
+  const labelEl = card.querySelector('.js-bdp-msg-label');
+  const statEl  = card.querySelector('.js-bdp-msg-stat');
+  const fillEl  = card.querySelector('.js-bdp-msg-fill');
+  const bar     = card.querySelector('.bdp-card__bar');
+  const valueEl = card.querySelector('.bdp-card__value');
+
+  function setTone(cls){
+    bar.classList.remove('is-good','is-warn','is-bad','is-neutral');
+    if (cls) bar.classList.add(cls);
+  }
+
+  function updateCard(status){
+    const total     = parseInt(card.dataset.total || '0', 10);
+    const completed = parseInt(card.dataset.completed || '0', 10);
+    const pending   = parseInt(card.dataset.pending || '0', 10);
+    const canceled  = parseInt(card.dataset.canceled || '0', 10);
+
+    let label, value, progress, tone;
+    switch (status) {
+      case null:
+      case undefined:
+        label    = wp.i18n ? wp.i18n.__('Total (last 7 days):','blitz-dock') : 'Total (last 7 days):';
+        value    = total;
+        progress = total > 0 ? 100 : 0;
+        tone     = 'is-neutral';
+        break;
+      case 'pending':
+        label = wp.i18n ? wp.i18n.__('Pending (last 7 days):','blitz-dock') : 'Pending (last 7 days):';
+        value = pending;
+        progress = total ? Math.round((pending / total) * 100) : 0;
+        tone = 'is-warn';
+        break;
+      case 'canceled':
+        label = wp.i18n ? wp.i18n.__('Canceled (last 7 days):','blitz-dock') : 'Canceled (last 7 days):';
+        value = canceled;
+        progress = total ? Math.round((canceled / total) * 100) : 0;
+        tone = 'is-bad';
+        break;
+      case 'completed':
+        label = wp.i18n ? wp.i18n.__('Completed (last 7 days):','blitz-dock') : 'Completed (last 7 days):';
+        value = completed;
+        const den = Math.max(1, completed + pending);
+        progress = Math.round((completed / den) * 100);
+        tone = 'is-good';
+        break;
+    }
+
+    labelEl.textContent = label;
+    statEl.textContent  = (value || 0).toLocaleString();
+    fillEl.style.width  = (progress || 0) + '%';
+    bar.setAttribute('aria-valuenow', String(progress || 0));
+    setTone(tone);
+    if (valueEl) valueEl.textContent = (value || 0).toLocaleString();
+  }
+
+  document.addEventListener('click', function(e){
+    const chip = e.target.closest('.bdp-status-chip[data-status]');
+    if (!chip || !card.contains(chip)) return;
+    const status = chip.getAttribute('data-status');
+    card.querySelectorAll('.bdp-status-chip').forEach(el => el.removeAttribute('aria-current'));
+    chip.setAttribute('aria-current','true');
+    updateCard(status);
+  });
+
+  document.addEventListener('keydown', function(e){
+    const chip = e.target.closest('.bdp-status-chip[data-status]');
+    if (!chip || !card.contains(chip)) return;
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      chip.click();
+    }
+  });
+
+  updateCard(null);
+})();
+
+(function(){
+  const card = document.querySelector('.bdp-card--messages');
+  if (!card) return;
+
+  const labelEl = card.querySelector('.js-bdp-msg-label');
+  const statEl  = card.querySelector('.js-bdp-msg-stat');
+  const fillEl  = card.querySelector('.js-bdp-msg-fill');
+  const bar     = card.querySelector('.bdp-card__bar');
+
+  function setTone(cls){
+    bar.classList.remove('is-good','is-warn','is-bad');
+    if (cls) bar.classList.add(cls);
+  }
+
+  function updateCard(status){
+    const total     = parseInt(card.dataset.total || '0', 10);
+    const completed = parseInt(card.dataset.completed || '0', 10);
+    const pending   = parseInt(card.dataset.pending || '0', 10);
+    const canceled  = parseInt(card.dataset.canceled || '0', 10);
+
+    let label, value, progress, tone;
+    switch ((status || 'completed')) {
+      case 'pending':
+        label = wp.i18n ? wp.i18n.__('Pending (last 7 days):','blitz-dock') : 'Pending (last 7 days):';
+        value = pending;
+        progress = total ? Math.round((pending / total) * 100) : 0;
+        tone = 'is-warn';
+        break;
+      case 'canceled':
+        label = wp.i18n ? wp.i18n.__('Canceled (last 7 days):','blitz-dock') : 'Canceled (last 7 days):';
+        value = canceled;
+        progress = total ? Math.round((canceled / total) * 100) : 0;
+        tone = 'is-bad';
+        break;
+      case 'completed':
+      default:
+        label = wp.i18n ? wp.i18n.__('Completed (last 7 days):','blitz-dock') : 'Completed (last 7 days):';
+        value = completed;
+        const den = Math.max(1, completed + pending);
+        progress = Math.round((completed / den) * 100);
+        tone = 'is-good';
+        break;
+    }
+
+    labelEl.textContent = label;
+    statEl.textContent  = (value || 0).toLocaleString();
+    fillEl.style.width  = (progress || 0) + '%';
+    bar.setAttribute('aria-valuenow', String(progress || 0));
+    setTone(tone);
+  }
+
+  document.addEventListener('click', function(e){
+    const btn = e.target.closest('.bdp-status-label[data-status]');
+    if (!btn || !card.contains(btn)) return;
+    const status = btn.getAttribute('data-status');
+    card.querySelectorAll('.bdp-status-label').forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+    updateCard(status);
+  });
+
+  updateCard('completed');
+})();

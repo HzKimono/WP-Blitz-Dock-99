@@ -70,7 +70,7 @@ class Dashboard_Metrics {
      * @param int $days Number of days to look back for opens.
      * @return array{opens:int,progress:int}
      */
-    public static function dock_opens_overview( $days = 7 ) {
+      public static function dock_opens_overview( $days = 7 ) {
         global $wpdb;
         $table = $wpdb->prefix . 'bdp_analytics';
         $from  = date( 'Y-m-d H:i:s', current_time( 'timestamp' ) - absint( $days ) * DAY_IN_SECONDS );
@@ -85,11 +85,40 @@ class Dashboard_Metrics {
         if ( $target <= 0 ) {
             $target = 100;
         }
-        $progress = min( 100, max( 0, (int) round( ( $opens / $target ) * 100 ) ) );
-
-        return [
+          return [
             'opens'    => $opens,
             'progress' => $progress,
         ];
+    }
+
+    /**
+     * Messages KPI (last N days), mirrors the chart’s filters and timezone.
+     *
+     * @param int $days Number of days to look back for messages.
+     * @return array{completed:int,pending:int,canceled:int,total:int,progress:int}
+     */
+    public static function messages_overview( $days = 7 ) {
+        global $wpdb;
+        $table = $wpdb->prefix . 'bdp_messages';
+        $from  = date( 'Y-m-d H:i:s', current_time( 'timestamp' ) - absint( $days ) * DAY_IN_SECONDS );
+
+        $total = (int) $wpdb->get_var( $wpdb->prepare(
+            "SELECT COUNT(*) FROM {$table} WHERE date_submitted >= %s", $from
+        ) );
+        $completed = (int) $wpdb->get_var( $wpdb->prepare(
+            "SELECT COUNT(*) FROM {$table} WHERE status = %s AND date_submitted >= %s", 'completed', $from
+        ) );
+        $pending = (int) $wpdb->get_var( $wpdb->prepare(
+            "SELECT COUNT(*) FROM {$table} WHERE status = %s AND date_submitted >= %s", 'pending', $from
+        ) );
+        $canceled = (int) $wpdb->get_var( $wpdb->prepare(
+            "SELECT COUNT(*) FROM {$table} WHERE status = %s AND date_submitted >= %s", 'canceled', $from
+        ) );
+
+        // Default progress: resolution rate (completed / (completed + pending)).
+        $den      = max( 1, $completed + $pending );
+        $progress = (int) round( ( $completed / $den ) * 100 );
+
+        return compact( 'completed', 'pending', 'canceled', 'total', 'progress' );
     }
 }
