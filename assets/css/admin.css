@@ -1164,3 +1164,35 @@ body.toplevel_page_blitz-dock #panel-dashboard .bdp-cards{ margin-bottom: 24px; 
 .bdp-card__bar.is-tier-1 .bdp-card__bar__fill,
 .bdp-card__bar.is-tier-2 .bdp-card__bar__fill{ background-color: var(--bdp-bar-orange); }
 .bdp-card__bar.is-tier-3 .bdp-card__bar__fill{ background-color: var(--bdp-bar-green); }
+
+:root{
+  --bdp-bar-red: #ef4444;
+  --bdp-chip-fg: #374151;
+  --bdp-chip-bg: #f6f7f7;
+  --bdp-chip-br: #e5e7eb;
+  --bdp-chip-green: #10b981;
+  --bdp-chip-orange: #f59e0b;
+  --bdp-chip-red: #ef4444;
+  --bdp-bar-neutral: #cbd5e1;
+}
+
+/* tone colors */
+.bdp-card__bar.is-good    .bdp-card__bar__fill{ background-color: var(--bdp-bar-green); }
+.bdp-card__bar.is-warn    .bdp-card__bar__fill{ background-color: var(--bdp-bar-orange); }
+.bdp-card__bar.is-bad     .bdp-card__bar__fill{ background-color: var(--bdp-bar-red); }
+.bdp-card__bar.is-neutral .bdp-card__bar__fill{ background-color: var(--bdp-bar-neutral); }
+
+/* status chips inside the messages card */
+.bdp-card--messages .bdp-status-breakdown{
+  display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;
+}
+.bdp-status-chip{
+  display:inline-block; line-height:1; font-size:12px; font-weight:500;
+  padding:2px 8px; border-radius:999px; cursor:pointer;
+  background:var(--bdp-chip-bg); border:1px solid var(--bdp-chip-br); color:var(--bdp-chip-fg);
+}
+.bdp-status-chip.is-completed{ border-color:rgba(16,185,129,.35); color:#065f46; }
+.bdp-status-chip.is-pending  { border-color:rgba(245,158,11,.35); color:#7c2d12; }
+.bdp-status-chip.is-canceled { border-color:rgba(239,68,68,.35); color:#7f1d1d; }
+.bdp-status-chip[aria-current="true"]{ box-shadow:0 0 0 2px rgba(38,103,255,.25); }
+.bdp-status-chip:focus-visible{ outline:2px solid #2667ff; outline-offset:1px; }
